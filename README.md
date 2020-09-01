@@ -5,3 +5,4 @@
 - Credit: sscanf จาก Y_Less https://github.com/Y-Less/sscanf
 - Credit: easyDialog จาก Emmet Southclaws https://github.com/Awsomedude/easyDialog
 - Credit: zcmd จาก zeex https://forum.sa-mp.com/showthread.php?t=91354
+- Credit: mysql จาก BlueG https://github.com/pBlueG/SA-MP-MySQL
