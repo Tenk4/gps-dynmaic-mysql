@@ -1,3 +1,11 @@
+/*
+	- Credit: All good function from SC:RP https://forum.sa-mp.com/showthread.php?t=538107
+	- Credit: Leaks666 from https://youtu.be/QkJyJS7IMSU?t=963
+	- Credit: sscanf from Y_Less https://github.com/Y-Less/sscanf
+	- Credit: easyDialog from Emmet Southclaws https://github.com/Awsomedude/easyDialog
+	- Credit: zcmd from zeex https://forum.sa-mp.com/showthread.php?t=91354
+	- Credit: mysql from BlueG https://github.com/pBlueG/SA-MP-MySQL
+*/
 #include <a_samp>
 #include <a_mysql>
 #include <zcmd>
@@ -150,19 +158,19 @@ CMD:creategps(playerid, params[])
 
 	if (sscanf(params, "ds[32]", type, gpsname))
 	{
-	    SendClientMessage(playerid, -1, "/creategps [รูปแบบ GPS] [ชื่อสถานที่]");
-	    SendClientMessage(playerid, -1, "1. สถานที่ทั่วไป 2. งานถูกกฎหมาย 3. งานผิดกฎหมาย");
+	    SendClientMessage(playerid, -1, "/creategps [รรยปรกยบยบ GPS] [ยชร—รจรรยถร’ยนยทร•รจ]");
+	    SendClientMessage(playerid, -1, "1. รยถร’ยนยทร•รจยทร‘รจรรคยป 2. ยงร’ยนยถรยกยกยฎรรร’ร 3. ยงร’ยนยผร”ยดยกยฎรรร’ร");
 	    return 1;
 	}
 	if (type < 1 || type > 3)
-		return SendClientMessage(playerid, -1, "รูปแบบของ GPS ต้องไม่ต่ำกว่า 1 และไม่เกิน 3 เท่านั้น");
+		return SendClientMessage(playerid, -1, "รรยปรกยบยบยขรยง GPS ยตรฉรยงรครรจยตรจร“ยกรรจร’ 1 รกร…รรครรจร ยกร”ยน 3 ร ยทรจร’ยนร‘รฉยน");
 
 	id = GPS_Create(type, gpsname, x, y, z);
 
 	if (id == -1)
-	    return SendClientMessage(playerid, -1, "ความจุของ GPS ในฐานข้อมูลเต็มแล้ว ไม่สามารถสร้างได้อีก (ติดต่อผู้พัฒนา)");
+	    return SendClientMessage(playerid, -1, "ยครร’รยจรยขรยง GPS รฃยนยฐร’ยนยขรฉรรรร…ร ยตรงรรกร…รฉร รครรจรร’รร’รยถรรรฉร’ยงรคยดรฉรร•ยก (ยตร”ยดยตรจรยผรรฉยพร‘ยฒยนร’)");
 
-	format(string, sizeof(string), "คุณได้สร้าง GPS ขึ้นมาใหม่ รูปแบบ GPS: %d, ชื่อสถานที่: %s, ไอดี: %d", type, gpsname, id);
+	format(string, sizeof(string), "ยครยณรคยดรฉรรรฉร’ยง GPS ยขร–รฉยนรร’รฃรรรจ รรยปรกยบยบ GPS: %d, ยชร—รจรรยถร’ยนยทร•รจ: %s, รครยดร•: %d", type, gpsname, id);
 	SendClientMessage(playerid, -1, string);
 	return 1;
 }
@@ -174,20 +182,20 @@ CMD:deletegps(playerid, params[])
 		string[64];
 
 	if (sscanf(params, "d", id))
-	    return SendClientMessage(playerid, -1, "/deletegps [ไอดี]");
+	    return SendClientMessage(playerid, -1, "/deletegps [รครยดร•]");
 
 	if ((id < 0 || id >= MAX_GPS) || !gpsData[id][gpsExists])
-	    return SendClientMessage(playerid, -1, "ไม่มีไอดี GPS นี้อยู่ในฐานข้อมูล");
+	    return SendClientMessage(playerid, -1, "รครรจรร•รครยดร• GPS ยนร•รฉรรรรจรฃยนยฐร’ยนยขรฉรรรร…");
 
 	GPS_Delete(id);
-	format(string, sizeof(string), "คุณได้ลบ GPS ไอดี %d ออกสำเร็จ", id);
+	format(string, sizeof(string), "ยครยณรคยดรฉร…ยบ GPS รครยดร• %d รรยกรร“ร รรงยจ", id);
 	SendClientMessage(playerid, -1, string);
 	return 1;
 }
 
 CMD:gps(playerid, params[])
 {
-	Dialog_Show(playerid, DIALOG_GPS, DIALOG_STYLE_LIST, "[รายการ GPS]", "สถานที่ทั่วไป\nงานถูกกฎหมาย\nงานผิดกฎหมาย", "เลือก", "ปิด");
+	Dialog_Show(playerid, DIALOG_GPS, DIALOG_STYLE_LIST, "[รร’รยกร’ร GPS]", "รยถร’ยนยทร•รจยทร‘รจรรคยป\nยงร’ยนยถรยกยกยฎรรร’ร\nยงร’ยนยผร”ยดยกยฎรรร’ร", "ร ร…ร—รยก", "ยปร”ยด");
 	return 1;
 }
 
@@ -218,11 +226,11 @@ Dialog:DIALOG_GPS(playerid, response, listitem, inputtext[])
 				}
 				if (!count)
 				{
-					SendClientMessage(playerid, -1, "เซิร์ฟเวอร์ยังไม่ได้เพิ่ม GPS");
+					SendClientMessage(playerid, -1, "ร ยซร”รรฌยฟร รรรรฌรร‘ยงรครรจรคยดรฉร ยพร”รจร GPS");
 					return 1;
 				}
 				format(string, sizeof(string), "%s", string2);
-				Dialog_Show(playerid, DIALOG_GPSPICK, DIALOG_STYLE_LIST, "[สถานที่ทั่วไป]", string, "เลือก", "ปิด");
+				Dialog_Show(playerid, DIALOG_GPSPICK, DIALOG_STYLE_LIST, "[รยถร’ยนยทร•รจยทร‘รจรรคยป]", string, "ร ร…ร—รยก", "ยปร”ยด");
 		    }
 		    case 1:
 		    {
@@ -245,11 +253,11 @@ Dialog:DIALOG_GPS(playerid, response, listitem, inputtext[])
 				}
 				if (!count)
 				{
-					SendClientMessage(playerid, -1, "เซิร์ฟเวอร์ยังไม่ได้เพิ่ม GPS");
+					SendClientMessage(playerid, -1, "ร ยซร”รรฌยฟร รรรรฌรร‘ยงรครรจรคยดรฉร ยพร”รจร GPS");
 					return 1;
 				}
 				format(string, sizeof(string), "%s", string2);
-				Dialog_Show(playerid, DIALOG_GPSPICK, DIALOG_STYLE_LIST, "[งานถูกกฎหมาย]", string, "เลือก", "ปิด");
+				Dialog_Show(playerid, DIALOG_GPSPICK, DIALOG_STYLE_LIST, "[ยงร’ยนยถรยกยกยฎรรร’ร]", string, "ร ร…ร—รยก", "ยปร”ยด");
 		    }
 		    case 2:
 		    {
@@ -272,11 +280,11 @@ Dialog:DIALOG_GPS(playerid, response, listitem, inputtext[])
 				}
 				if (!count)
 				{
-					SendClientMessage(playerid, -1, "เซิร์ฟเวอร์ยังไม่ได้เพิ่ม GPS");
+					SendClientMessage(playerid, -1, "ร ยซร”รรฌยฟร รรรรฌรร‘ยงรครรจรคยดรฉร ยพร”รจร GPS");
 					return 1;
 				}
 				format(string, sizeof(string), "%s", string2);
-				Dialog_Show(playerid, DIALOG_GPSPICK, DIALOG_STYLE_LIST, "[งานผิดกฎหมาย]", string, "เลือก", "ปิด");
+				Dialog_Show(playerid, DIALOG_GPSPICK, DIALOG_STYLE_LIST, "[ยงร’ยนยผร”ยดยกยฎรรร’ร]", string, "ร ร…ร—รยก", "ยปร”ยด");
 		    }
 		}
 	}
@@ -291,7 +299,7 @@ Dialog:DIALOG_GPSPICK(playerid, response, listitem, inputtext[])
 	    format(var, sizeof(var), "GPSID%d", listitem);
 	    new gpsid = GetPVarInt(playerid, var);
 		SetPlayerCheckpoint(playerid, gpsData[gpsid][gpsPos][0], gpsData[gpsid][gpsPos][1], gpsData[gpsid][gpsPos][2], 3.0);
-		format(string, sizeof(string), "คุณได้เปิดระบบ GPS ค้นหาสถานที่ชื่อ %s", gpsData[gpsid][gpsName]);
+		format(string, sizeof(string), "ยครยณรคยดรฉร ยปร”ยดรรยบยบ GPS ยครฉยนรร’รยถร’ยนยทร•รจยชร—รจร %s", gpsData[gpsid][gpsName]);
 		SendClientMessage(playerid, -1, string);
 	}
 	return 1;
